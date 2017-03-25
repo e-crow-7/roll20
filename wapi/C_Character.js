@@ -2,7 +2,6 @@
 	$.Class({name: 'R20.Character', extend: 'R20.Object',
 		properties: {
 			r20_character:	{}, //! Roll20 Character Object.
-			handout_controls :  {}, //! Roll20 Handout containin character controls.
 		},
 		methods: {
 			/*! Constructor
@@ -26,8 +25,6 @@
                     LOG.Error("R20 character could not be created for some unknown reason.");
                     return false;
                 }
-                t.handout_controls = new $.R20.Handout();
-                t.handout_controls.initialize();
                 
                 t.set('name', name ? name : "Unnamed");
                 t._setupGMControls();
@@ -35,12 +32,16 @@
                 return true;
 			},
 			
-			/*! Setups up the GM controls.
+			/*! Sets up the GM controls.
 			 */
 			_setupGMControls: function() {
 			    var t = this.$;
 			    
-			    t.set('gmnotes', '<div><strong><a href="!dchar ?{Are you sure you want to delete?|No,0|Yes,1}">DELETE</a><strong></div>');
+			    var delete_html = HTML.createCategory('Delete Character',
+	                HTML.createButton("Delete this Character", "!delete_character ?{Are you sure you want to delete?|No,0|Yes,1}")
+	            );
+			    
+			    t.set('gmnotes', delete_html);
 			},
 			
 			/*! Sets a property
@@ -56,9 +57,6 @@
                         t.r20_character.set(property, value);
                     } else if(t.r20_character.get(property) !== undefined) {
                         t.r20_character.set(property, value);
-                        if(property == "name") {
-                            t.handout_controls.set(property, ("Ctrl: " + value));
-                        }
                     } else {
                         t._super.set(property, value);
                     }

@@ -92,12 +92,12 @@
                     if(_.contains(['notes','gmnotes','bio'], property)) {
                         LOG.Warn("The property '" + property + "' cannot be obtained at this time.")
                     } else if(t.object.get(property) !== undefined) {
-                        t.object.get(property, value);
+                        return t.object.get(property);
                     } else {
-                        t._super.get(property, value);
+                        return t._super.get(property);
                     }
                 } else {
-                    t._super.set(property, value);
+                    return t._super.get(property);
                 }
             }
     
